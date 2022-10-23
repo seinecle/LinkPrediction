@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import org.gephi.graph.api.GraphModel;
 import org.gephi.graph.api.Node;
 import org.gephi.graph.api.Table;
 import org.gephi.io.exporter.api.ExportController;
+import org.gephi.io.exporter.plugin.ExporterGEXF;
 import org.gephi.io.exporter.spi.Exporter;
 import org.gephi.io.importer.api.Container;
 import org.gephi.io.importer.api.ContainerUnloader;
@@ -84,13 +86,13 @@ public class LinkPredictionController {
     // Console Logger
     private Logger consoleLogger = LogManager.getLogger(LinkPredictionStatistics.class);
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         File file = new File("miserables_result.gexf");
         InputStream targetStream = new FileInputStream(file);
         new LinkPredictionController().runPrediction(targetStream, 3, "_abc");
     }
 
-    public void runPrediction(InputStream is, int nbOfPredictions, String uniqueId) {
+    public String runPrediction(InputStream is, int nbOfPredictions, String uniqueId) throws IOException {
         ProjectController projectController = Lookup.getDefault().lookup(ProjectController.class);
         GraphController graphController = Lookup.getDefault().lookup(GraphController.class);
         ImportController importController = Lookup.getDefault().lookup(ImportController.class);
@@ -129,7 +131,7 @@ public class LinkPredictionController {
         }
 
         // Add highest predicted edge to graph
-        addNHighestPredictedEdgeToGraph(factory, getAlgorithmName(), nbOfPredictions);
+        addNHighestPredictedEdgesToGraph(factory, getAlgorithmName(), nbOfPredictions);
 
         // Unlock graph
         consoleLogger.debug("Unlock graph");
@@ -137,18 +139,18 @@ public class LinkPredictionController {
         workspace = projectController.getCurrentWorkspace();
 
         ExportController ec = Lookup.getDefault().lookup(ExportController.class);
-        Exporter exporterGexf = ec.getExporter("gexf");
+        ExporterGEXF exporterGexf = (ExporterGEXF) ec.getExporter("gexf");
         exporterGexf.setWorkspace(workspace);
-        try {
-            ec.exportFile(new File(resultFileName), exporterGexf);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return;
-        }
+        exporterGexf.setExportDynamic(false);
+
+        StringWriter stringWriter = new StringWriter();
+        ec.exportWriter(stringWriter, exporterGexf);
+        stringWriter.close();
+        return stringWriter.toString();
 
     }
 
-    protected void addNHighestPredictedEdgeToGraph(GraphFactory factory, String algorithm, int n) {
+    protected void addNHighestPredictedEdgesToGraph(GraphFactory factory, String algorithm, int n) {
         // Get highest predicted value
         for (int i = 0; i < n; i++) {
             highestPrediction = getAndRemoveHighestPrediction();

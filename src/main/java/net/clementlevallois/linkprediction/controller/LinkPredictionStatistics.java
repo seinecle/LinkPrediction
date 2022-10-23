@@ -151,18 +151,6 @@ public abstract class LinkPredictionStatistics {
     }
 
     /**
-     * Generates a report after link prediction calculation has finished.
-     *
-     * @return HTML report
-     */
-    public String getReport() {
-        //This is the HTML report shown when execution ends.
-        //One could add a distribution histogram for instance
-        return "<HTML> <BODY> <h1>Link Prediction</h1> " + "<hr>"
-                + "<br> No global results to show. Check Data Laboratory for results" + "<br />" + "</BODY></HTML>";
-    }
-
-    /**
      * Gets the column "last prediction".
      *
      * @return Column "last prediction"
