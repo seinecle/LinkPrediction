@@ -31,7 +31,6 @@ import org.gephi.graph.api.Node;
 import org.gephi.graph.api.Table;
 import org.gephi.io.exporter.api.ExportController;
 import org.gephi.io.exporter.plugin.ExporterGEXF;
-import org.gephi.io.exporter.spi.Exporter;
 import org.gephi.io.importer.api.Container;
 import org.gephi.io.importer.api.ContainerUnloader;
 import org.gephi.io.importer.api.ImportController;
