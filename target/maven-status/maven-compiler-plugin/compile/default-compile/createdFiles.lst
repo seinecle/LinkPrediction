@@ -2,7 +2,6 @@ net\clementlevallois\linkprediction\controller\GraphUtils.class
 net\clementlevallois\linkprediction\controller\LinkPredictionColumn.class
 net\clementlevallois\linkprediction\controller\LinkPredictionStatistics.class
 net\clementlevallois\linkprediction\controller\Complexity.class
-net\clementlevallois\linkprediction\controller\Complexity$1.class
 net\clementlevallois\linkprediction\controller\LinkPredictionController.class
 net\clementlevallois\linkprediction\controller\LinkPredictionStatistics$LinkPredictionProbability.class
 net\clementlevallois\linkprediction\controller\LinkPredictionController$LinkPredictionProbability.class
